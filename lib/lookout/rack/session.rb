@@ -31,8 +31,9 @@ class Lookout::Rack::Session
     env['HTTP_COOKIE'] ||= @cookies.for(uri)
     @request = Rack::Request.new(env)
     errors = env['rack.errors']
-    @response = Rack::MockResponse.
-      new(*((env[:lint] ? Rack::Lint.new(@app) : @app).call(env) + [errors]))
+    status, headers, body = *(env[:lint] ? Rack::Lint.new(@app) : @app).call(env)
+    @response = Rack::MockResponse.new(status, headers, body, errors.flush)
+    body.close if body.respond_to?(:close)
     @cookies.merge! @response.headers['Set-Cookie'], uri if @response.headers['Set-Cookie']
     self
   end
