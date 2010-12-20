@@ -5,30 +5,35 @@ class Lookout::Rack::Session
     @app = app
     @request = nil
     @response = nil
+    clear
   end
 
-  def get(uri, options = {})
-    dispatch('GET', uri, options)
+  def get(uri, params = {}, env = {})
+    dispatch('GET', uri, params, env)
   end
 
-  def post(uri, options = {})
-    dispatch('POST', uri, options)
+  def post(uri, params = {}, env = {})
+    dispatch('POST', uri, params, env)
   end
 
-  def put(uri, options = {})
-    dispatch('PUT', uri, options)
+  def put(uri, params = {}, env = {})
+    dispatch('PUT', uri, params, env)
   end
 
-  def delete(uri, options = {})
-    dispatch('DELETE', uri, options)
+  def delete(uri, params = {}, env = {})
+    dispatch('DELETE', uri, params, env)
   end
 
-  def dispatch(method, uri = '', options = {})
-    env = Rack::MockRequest.env_for(uri, options.merge(:method => method))
+  def dispatch(method, uri = '', params = {}, env = {})
+    uri = URI(uri)
+    uri.host ||= Lookout::Rack::DefaultHost
+    env = Rack::MockRequest.env_for(uri.to_s, env.merge(:method => method, :params => params))
+    env['HTTP_COOKIE'] ||= @cookies.for(uri)
     @request = Rack::Request.new(env)
     errors = env['rack.errors']
     @response = Rack::MockResponse.
-      new(*((options[:lint] ? Rack::Lint.new(@app) : @app).call(env) + [errors]))
+      new(*((env[:lint] ? Rack::Lint.new(@app) : @app).call(env) + [errors]))
+    @cookies.merge! @response.headers['Set-Cookie'], uri if @response.headers['Set-Cookie']
     self
   end
 
@@ -44,5 +49,15 @@ class Lookout::Rack::Session
     response.redirect? or
       raise Lookout::Rack::RedirectError, 'most recent response was not a redirect' 
     get(response['Location'])
+  end
+
+  def cookie(cookie, uri = nil)
+    @cookies.merge! cookie
+    self
+  end
+
+  def clear
+    @cookies = Lookout::Rack::Cookies.new
+    self
   end
 end
