@@ -20,10 +20,10 @@ module Lookout::Rack
   autoload :Session, 'lookout/rack/session'
 end
 
-module Lookout::Expectation
+class Lookout::Expectations
   include Lookout::Rack::Methods
 end
 
-class Lookout::Suite
+module Lookout::Expectation
   include Lookout::Rack::Methods
 end
