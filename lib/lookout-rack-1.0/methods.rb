@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 module Lookout::Rack::Methods
+  private
+
   def session
     @app ||= begin
                Rack::Builder.parse_file('fixtures/config.ru')

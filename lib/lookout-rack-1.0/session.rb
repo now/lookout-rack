@@ -46,9 +46,9 @@ class Lookout::Rack::Session
     @response or raise Lookout::Rack::ResponseError, 'no response has been received yet'
   end
 
-  def follow_redirect!
+  def redirect!
     response.redirect? or
-      raise Lookout::Rack::RedirectError, 'most recent response was not a redirect' 
+      raise Lookout::Rack::RedirectError, 'most recent response was not a redirect'
     get(response['Location'])
   end
 

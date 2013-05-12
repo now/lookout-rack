@@ -9,28 +9,28 @@ Expectations do
     session.get('/').response.status
   end
 
-  expect session.to.have.response.redirect? do |s|
-    s.get('/redirected')
+  expect result.redirect? do
+    session.get('/redirected').response
   end
 
-  expect session.not.to.have.response.redirect? do |s|
-    s.get('/redirected').follow_redirect!
+  expect result.not.redirect? do
+    session.get('/redirected').redirect!.response
   end
 
   expect 'you have been successfully redirected to target' do
-    session.get('/redirected').follow_redirect!.response.body
+    session.get('/redirected').redirect!.response.body
   end
 
   expect({}) do
-    session.get('/redirected').follow_redirect!.request.GET
+    session.get('/redirected').redirect!.request.GET
   end
 
   expect Lookout::Rack::ResponseError do
-    session.follow_redirect!
+    session.redirect!
   end
 
   expect Lookout::Rack::RedirectError do
-    session.get('/').follow_redirect!
+    session.get('/').redirect!
   end
 
   expect({}) do

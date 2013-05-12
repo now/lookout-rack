@@ -4,7 +4,7 @@ require 'sinatra/base'
 
 module Lookout module Rack end end
 
-class Lookout::Rack::FakeApp < Sinatra::Base
+class Lookout::Rack::TestApp < Sinatra::Base
   get '/' do
     'GET: %p' % params
   end
