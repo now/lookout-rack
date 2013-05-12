@@ -13,7 +13,7 @@ class Lookout::Rack::Cookie
 
     @options = Hash[Rack::Utils.parse_query(options, ';').map{ |k, v| [k.downcase, v] }]
     @options['domain'] ||= uri.host || default_host
-    @options['path'] ||= uri.path.sub(%r{/[^/]*\Z}, '')
+    @options['path'] ||= uri.path.sub(%r{/[^/]*\z}, '')
   end
 
   def empty?
