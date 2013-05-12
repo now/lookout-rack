@@ -1,3 +1,134 @@
-# Lookout-Rack #
+                                 Lookout-Rack
 
-Lookout-Rack provides easy interaction with Rack from Lookout.
+  Lookout-Rack provides easy interaction with Rack¹ from Lookout².  It provides
+  you with a session connected to your Rack application through which you can
+  make requests, check responses, follow redirects and set, inspect, and clear
+  cookies.
+
+¹ See http://rack.rubyforge.org/
+² See http://disu.se/software/lookout/
+
+§ Installation
+
+    Install Lookout-Rack with
+
+    % gem install lookout-rack
+
+§ Usage
+
+    Include the following code in your ‹Rakefile› (provided that you’re using
+    Lookout-Rake¹):
+
+      require 'lookout-rack-3.0'
+
+      Lookout::Rake::Tasks::Test.new do |t|
+        t.requires << 'lookout-rack-3.0'
+      end
+
+  ¹ See http://disu.se/software/lookout-rake/
+
+    Then set up a ‹fixtures/config.ru› file that Lookout-Rack
+    will use for loading your Rack app.
+
+      load 'path/to/app.rb'
+      use Rack::Lint
+      run Path::To::App
+
+    This file, if it exists, will be loaded during the first call to #session.
+    If it doesn’t exist, ‹config.ru› will be used instead.
+
+    You can now test your app:
+
+      Expectations do
+        expect 200 do
+          session.get('/').response.status
+        end
+      end
+
+    The #session method returns an object that lets you #get, #post, #put, and
+    #delete resources from the Rack app.  You call these method with a URI¹
+    that you want to access/modify together with any parameters that you want
+    to pass and any Rack environment that you want to use (which isn’t very
+    common).  For example, let’s get ‹/pizzas/› with olives on them:
+
+      expect 200 do
+        session.get('/pizzas/', 'olives' => '1').response.status
+      end
+
+  ¹ Abbreviation for Uniform Resource Identifier
+
+    The #response method on #session returns a mock Rack response object that
+    can be queried for results.  Similarly, there’s a #request method that lets
+    you inspect the request that was made.
+
+    Lookout-Rack also deals with cookies.  Assuming that ‹/cookies/set/› will
+    set any cookies that we pass it and that ‹/cookies/show/› will simply do
+    nothing relevant, the following expectation will pass:
+
+      expect 'value' => '1' do
+        session.
+          get('/cookies/set/', 'value' => '1').
+          get('/cookies/show/').request.cookies
+      end
+
+    Sometimes you may want to set cookies yourself before making a request.
+    You then use the #cookie method, which takes a String of ‹KEY=VALUE› pairs
+    separated by newlines, commas, and/or semicolons and sets those cookies in
+    the session:
+
+      expect 'value' => '1', 'other' => '2' do
+        session.
+          cookie("value=1\n\nother=2").
+          get('/cookies/show/').request.cookies
+      end
+
+    You may also want to clear all cookies in your session using #clear:
+
+      expect({}) do
+        session.
+          get('/cookies/set', 'value' => '1').
+          clear.
+          get('/cookies/show').request.cookies
+      end
+
+    Finally, to test redirects, call the #redirect! method on the session
+    object, assuming that ‹/redirected/› redirects to another location:
+
+      expect result.redirect? do
+        session.get('/redirected/').response
+      end
+
+      expect result.not.redirect? do
+        session.get('/redirected/').redirect!.response
+      end
+
+    That’s basically all there’s to it.  You can check the {API documentation}¹
+    for more information.
+
+¹ See http://disu.se/software/lookout-rack/api/Lookout/Rack/
+
+§ Financing
+
+    Currently, most of my time is spent at my day job and in my rather busy
+    private life.  Please motivate me to spend time on this piece of software
+    by donating some of your money to this project.  Yeah, I realize that
+    requesting money to develop software is a bit, well, capitalistic of me.
+    But please realize that I live in a capitalistic society and I need money
+    to have other people give me the things that I need to continue living
+    under the rules of said society.  So, if you feel that this piece of
+    software has helped you out enough to warrant a reward, please PayPal a
+    donation to now@disu.se¹.  Thanks!  Your support won’t go unnoticed!
+
+¹ Send a donation:
+  https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=now@disu.se&item_name=Lookout-Rack
+
+§ Reporting Bugs
+
+    Please report any bugs that you encounter to the {issue tracker}¹.
+
+  ¹ See https://github.com/now/lookout-rack/issues
+
+§ Authors
+
+    Nikolai Weibull wrote the code, the tests, the documentation, and this
+    README.
