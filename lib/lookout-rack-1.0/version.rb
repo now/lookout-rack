@@ -28,5 +28,10 @@ module Lookout::Rack
          methods.rb
          session.rb]
     end
+
+    def additional_files
+      %w[fixtures/app.rb
+         fixtures/config.ru]
+    end
   }
 end
