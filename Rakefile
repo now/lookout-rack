@@ -5,11 +5,7 @@ require 'inventory-rake-1.0'
 module Lookout end
 load File.expand_path('../lib/lookout-rack-1.0/version.rb', __FILE__)
 
-Inventory::Rake::Tasks.define Lookout::Rack::Version, :gem => proc{ |_, s|
-  s.author = 'Nikolai Weibull'
-  s.email = 'now@bitwi.se'
-  s.homepage = 'https://github.com/now/lookout-rack'
-}
+Inventory::Rake::Tasks.define Lookout::Rack::Version
 
 Inventory::Rake::Tasks.unless_installing_dependencies do
   require 'lookout-rake-3.0'
