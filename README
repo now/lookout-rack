@@ -6,7 +6,7 @@
   cookies.
 
 ¹ See http://rack.rubyforge.org/
-² See http://disu.se/software/lookout/
+² See http://disu.se/software/lookout-3.0/
 
 § Installation
 
@@ -25,7 +25,7 @@
         t.requires << 'lookout-rack-3.0'
       end
 
-  ¹ See http://disu.se/software/lookout-rake/
+  ¹ See http://disu.se/software/lookout-rake-3.0/
 
     Then set up a ‹fixtures/config.ru› file that Lookout-Rack
     will use for loading your Rack app.
@@ -105,7 +105,7 @@
     That’s basically all there’s to it.  You can check the {API documentation}¹
     for more information.
 
-¹ See http://disu.se/software/lookout-rack/api/Lookout/Rack/
+¹ See http://disu.se/software/lookout-rack-1.0/api/Lookout/Rack/
 
 § Financing
 

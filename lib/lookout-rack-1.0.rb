@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Namespace for [Lookout](http://disu.se/software/lookout/).  The bulk of the
+# Namespace for [Lookout](http://disu.se/software/lookout-3.0/).  The bulk of the
 # library is in {Lookout::Rack::Session}.
 module Lookout end
 
 # [Rack](http://rack.rubyforge.org/) interface for
-# [Lookout](http://disu.se/software/lookout/).
+# [Lookout](http://disu.se/software/lookout-3.0/).
 module Lookout::Rack
   # The default host/URI to use for {Session#dispatch requests} and cookies.
   DefaultHost = 'example.org'
