@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # A [Rack](http://rack.rubyforge.org/) session for use with
-# [Lookout](http://disu.se/software/lookout/).  Given a Rack “app”, it’ll allow
-# you to make {#get}, {#post}, {#put}, and {#delete} requests (and actually
-# {#dispatch} arbitrary requests, if you desire), check the sent {#request},
-# check the received {#response}, follow {#redirect!}s, add {#cookie}s, and
-# {#clear} cookies.
+# [Lookout](http://disu.se/software/lookout-3.0/).  Given a Rack “app”, it’ll
+# allow you to make {#get}, {#post}, {#put}, and {#delete} requests (and
+# actually {#dispatch} arbitrary requests, if you desire), check the sent
+# {#request}, check the received {#response}, follow {#redirect!}s, add
+# {#cookie}s, and {#clear} cookies.
 class Lookout::Rack::Session
   # Sets up a new session for APP.  You’ll most likely not call this yourself,
   # leaving it up to {Methods#session} to do so.
