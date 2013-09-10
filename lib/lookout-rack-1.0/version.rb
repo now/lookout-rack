@@ -8,7 +8,7 @@ module Lookout::Rack
       author 'Nikolai Weibull', 'now@disu.se'
     }
 
-    homepage 'http://disu.se/software/lookout-rack/'
+    homepage 'http://disu.se/software/lookout-rack-1.0/'
 
     licenses{
       license 'LGPLv3+',
